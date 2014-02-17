@@ -1,0 +1,31 @@
+apply plugin: 'groovy'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // compile 'javax.comm:comm:3.0-u1'
+    // compile 'org.rxtx:rxtxcomm:2.0-7pre1'
+    // compile 'org.bidib.jbidib.org.qbang.rxtx:rxtxcomm:2.2'
+    compile fileTree('lib')
+    compile 'org.codehaus.groovy:groovy:2.2.1'
+
+    // We use the awesome Spock testing and specification framework
+    // testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+    testCompile 'junit:junit:4.11'
+}
+
+task run(type: JavaExec, dependsOn: jar) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.hexamite.hx19.SerialComm'
+}
+
+
+/**
+java -cp .:/usr/share/java/RXTXcomm.jar \
+-Djava.library.path=/lib:/usr/lib/jni \
+-Dgnu.io.rxtx.SerialPorts=/dev/ttyACM0 \
+SerialComm /dev/ttyACM0
+
+*/
