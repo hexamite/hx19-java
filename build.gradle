@@ -1,4 +1,8 @@
 apply plugin: 'groovy'
+apply plugin: 'eclipse'
+
+sourceSets.main.groovy.srcDirs = sourceSets.main.java.srcDirs
+sourceSets.test.groovy.srcDirs = sourceSets.test.java.srcDirs
 
 repositories {
     mavenCentral()

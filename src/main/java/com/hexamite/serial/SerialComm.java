@@ -1,4 +1,4 @@
-package com.hexamite.hx19;
+package com.hexamite.serial;
 
 // import gnu.io.CommPort;
 // import gnu.io.CommPortIdentifier;

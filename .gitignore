@@ -3,3 +3,8 @@
 /build/
 /lib/jssc.jar
 /lib/RXTXcomm.jar
+/bin
+.classpath
+/.project
+/.classpath
+/.settings/
