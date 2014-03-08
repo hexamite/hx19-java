@@ -25,6 +25,11 @@ task run(type: JavaExec, dependsOn: jar) {
     main = 'com.hexamite.hx19.SerialComm'
 }
 
+task run2(type: JavaExec, dependsOn: jar) {
+	classpath = sourceSets.main.runtimeClasspath
+	main = 'com.hexamite.hx19.device.Tracker'
+}
+
 
 /**
 java -cp .:/usr/share/java/RXTXcomm.jar \

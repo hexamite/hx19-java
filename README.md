@@ -46,13 +46,18 @@ The configuration language maps in general to XML in a simple way:
 
 `body` can of course have its own attributes and body and so on. An empty element must be followed by either empty parantheses or empty curly braces.
 
+Line comments `// comment` and range comments `/* comment */` can be place anywhere in the file, but range comments cannot be nested.
+
+Apart from the configuration itself the configuration file may contain any valid groovy code, for example initial calculation or constants. 
+Variables defined in that way can be used instead of literals, anywhere in the configuration. 
+
 ### Specification
 
 The exact syntax of the configuration is restricted in the follwing way:
 
 The root element must be 'positionProvider'. This element can contain any number of device configurations, 
-that is `soundEmitter`s, `soundListener`s and `monitor`s. It can also contain `frame` elements which can
-make it simle to configure a set of devices mounted on a frame where only the position and orientation of 
+that is `soundEmitter`, `soundListener` and `monitor` configurations. It can also contain `frame` elements which can
+make it easier to configure a set of devices mounted on a frame where only the position and orientation of 
 the frame changes, but the relative position of the devices is constant.
 
 Emitters and listeners can be given 3-dimenstional positions, with the positions of the remaining devices to be determined.
