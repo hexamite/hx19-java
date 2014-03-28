@@ -19,8 +19,7 @@ class Tracker {
 		def builder = new ObjectGraphBuilder()
 		builder.classNameResolver = "com.hexamite.hx19.device"
 		
-		def monitor = builder.tracker {
-			monitor(name: 'S21')
+		def monitor = 	builder.tracker {			monitor(name: 'S21')
 			soundEmitter(name: 'S21') { point(x: 12345, y: 23456, z: 34567) }
 			soundEmitter(name: 'S22') { point(x: 12345, y: 23456, z: 34567) }
 			soundEmitter(name: 'S23') { point(x: 12345, y: 23456, z: 34567) }

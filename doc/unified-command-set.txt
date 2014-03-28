@@ -1,0 +1,62 @@
+Monitor 
+|Receiver
+||Transmitter
+|||
+MRT  !    message.to: 'all'
+M    $    device.syncStrobe: true
+M    %    device.syncStrobe: false
+MRT  < >  serial
+MRT  ^#   senderMemory(count: <integer>)
+MRT  R#&  message.to: 'R#'
+MRT  R&   message.to: 'R'
+MRT  [    message()  { }                                        send the message
+MRT  a#:  device.acquisitionRate: <integer>
+MRT  b    device.expandMemoryRefs: true|false                   expand ^# to # chars from memory                                  
+MRT  bt   query.batteryStatus
+MRT  ee   device.store: true|false  
+M    f#   device.firstTagInQueue: <integer>
+MRT  h    device.deepSleep: true|false
+  T  mb#  device.monitorBattery: true|false
+  T  mc#  device.countRecords: true|false
+MRT  md#  device.ledOn: true|false
+ R   mn#  device.noiceRecovery: true|false
+  T  mn#  device.directNetworkAccess: true|false
+ RT  mp#  device.powerSavings: true|false
+  T  mp#  device.serialPinOn: true|false
+ R   ms#  device.doppler: true|false
+  T  mx#  device.rfidOn: true|false
+  T  n#   
+ RT  p#   device.signalPower: 0|1|2|3
+M    px#  device.signalPower: 0|1|2|3
+MRT  q#   device.receiverOutputResultQueue
+MRT  r#   device.inputChannel: 1..125
+M    s#   device.numTags
+MRT  t#   device.outputChannel: 1..125
+MRT  v    query.version: true|false
+MRT  w    query.workRegisters
+
+Example message
+
+message(to: 'R21') {
+    serial {                                    // send the query to the serial port
+        query(
+            batteryStatus: true,
+            version: true
+        )
+    }
+    device(
+        store: true,
+        signalPower: 3,
+        doppler: true
+    )
+    message(to: 'M') {                          // R21 will send this message to all monitors.
+        serial('abcde')
+    }
+}
+
+The text represenation of this message is
+
+R21& <123456> bt v ee p3 ms1 [M<abcde>]{checksum}{carrige-return}
+
+
+

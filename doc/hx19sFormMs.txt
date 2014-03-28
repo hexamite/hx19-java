@@ -1,0 +1,20 @@
+Monitor Synchronizer Command Summery
+
+!        Attention all devices. Global call to all devices, monitors included
+$        Enables the synchronization strobe
+%        Stops the synchronization strobe
+< >      Received data between the first and the last bracket is placed on the serial wire I/O  
+M#&      Addresses a specific a HX19MS privately, # is the specific numeric device ID. 
+M&       Public monitor synchronizer call, every HX19MS responds to this call 
+[        The device broadcasts its Receive Buffers excluding first opening and closing brackets
+a#:      Acquisition interval (Sample rates)
+ee       The device stores current operating parameters on EEPROM
+f#       first tag called in a queue 
+md#      if # is 1 the blue LED will flash, if 0 the LED is of (# default 1)
+px#      Select RF transmission power, used to control the range bubble (default 3, range 0 through 3)
+r#       Select RF input channel range (1 to 125). (default ch. 123 = 2.523GHZ)
+s#       Nnumber of tags called 
+t#       Select RF output channel range (1 to 125) (default ch. 123 = 2.523GHZ)
+v        Gets the device version
+w        gets the status of the work registers.
+

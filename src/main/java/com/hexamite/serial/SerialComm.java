@@ -45,22 +45,38 @@ public class SerialComm {
             e.printStackTrace();
         }
     }
+    
+    private byte[] pack(String payload) {
+    	int sum = 0;
+    	for(byte b: payload.getBytes()) {
+    		sum += b;
+    	}
+    	return (payload + "/" + String.format("%X", sum) + "\r").getBytes();
+    }
            
     public void testSerialComm() {
         SerialPort serialPort = new SerialPort("/dev/ttyUSB0");
         try {
             serialPort.openPort();//Open serial port
             serialPort.setParams(250000, 8, 1, 0);//Set params.
-            byte[] buffer;
-            do {
-                buffer = serialPort.readBytes(1);//Read 1 byte from serial port
-                System.out.print(new String(buffer));
-            } while(buffer[0] != '\r');
+	        // serialPort.writeBytes(pack("M&$"));
+            
+            for(int i = 0; i < 200; i++) {
+	            byte[] buffer;
+	            System.out.println("--");
+	            do {
+	                buffer = serialPort.readBytes(1);//Read 1 byte from serial port
+	                if(buffer.length > 0 && buffer[0] != '\r') {
+	                	System.out.print(new String(buffer));
+	                }
+	            } while(buffer[0] != '\r');
+	            System.out.println("--");
+            }
             serialPort.closePort();//Close serial port
         }
         catch (SerialPortException ex) {
             System.out.println(ex);
-        }
+		}
     }
 
             

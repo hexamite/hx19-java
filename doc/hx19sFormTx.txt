@@ -1,0 +1,35 @@
+﻿Tag Commands Summery
+
+!        Attention all devices. Global call to all devices, including tags respond
+< >      Received data between the first and the last bracket is placed on the serial wire I/O  
+T#&      Addresses a specific tag privately where # is the tags specific numeric ID. 
+T&       Public transmitter call, all tags respond to this call 
+[        Everything between the first opening “[“ and the last “]” closing bracket is RF broadcasted
+a#:      Acquisition interval (Sample rates)
+b        get battery status
+d#       Downtime # is a decimal value controlling the sleep duration
+ee       The device stores current parameters on EEPROM
+h        Deep sleep, the device essentially shuts off (sync strobing will wake the device in 24-64s)
+ht       Shut off, device can be turned back on by grounding the micromatch pin
+i#       Period of the monotone ultrasonic burst (default 49 corresponds to 40khz)
+m?       Replace the ? with a letter from the mode submenu followed by 1 for ON and 0 for OFF
+n#       Number of periods or length of the burst (default 60 periods)
+p#       RF transmission power, used to control the range bubble (default 2, range 0 through 3 )
+r#       Select RF input channel range (1 to 125). (default ch. 123 = 2.523GHZ)
+t#       Select RF output channel range (1 to 125) (default ch. 123 = 2.523GHZ)
+v        get device version
+w        get status of work registers
+x        Change the RFID of the tag
+
+
+Mode Submenu:
+
+b#:      Continuous Supply or Battery Monitoring (default b0 battery monitoring disabled) *
+c#:      “c1” enables record count insertion (default c0)
+d#       “d1” disables LED, “d0” enables LED (default d0)
+n#:      Enable Direct Network Access (default n0 DNA disabled)
+p#:      Disable serial com pin (default p0 pin enabled)
+x#:      “x1” RFID is emitted  “x0” no RFID is emitted (default x1)
+
+* Underscore is added to the RFID followed by batter level, the numeric character 0-9 resents the power supply level. It should not be higher than 7 and not lower than 3.
+

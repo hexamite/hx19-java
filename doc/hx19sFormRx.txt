@@ -1,0 +1,27 @@
+Receiver Commands Summery
+
+!       Attention all devices. Global call to all devices, receivers included
+< >     ASCII data between the first and the last bracket is relayed to the serial I/O  (RS485/RS232)
+R#&     Addresses a specific receiver privately, # is the specific numeric ID. 
+R&      Public transmitter call, all tags respond to this call 
+[       Everything between the first opening “[“ and the last “]” closing bracket is RF broadcasted
+a#:     Acquisition interval (Sample rates)
+b       Receiver looks for ^# between broadcast brackets and replaces with # characters from memory
+bt      receiver battery status
+ee      The device stores current operating parameters on EEPROM
+h       Deep sleep, the device essentially shuts off (sync strobing will wake the device in 24-64s)
+m?      Mode # is a decimal value setting and clearing the mode bits
+p#      Select RF transmission power, used to control the range bubble (default 3, range 0 through 3)
+q#      Sets up a receiver output result queue 
+r#      Select RF input channel range (1 to 125). (default ch. 123 = 2.523GHZ)
+t#      Select RF output channel range (1 to 125) (default ch. 123 = 2.523GHZ)
+v       Gets the device version
+w       gets the status of the work registers.
+
+Mode Submenu:
+d#      The LED is on during the activity cycle
+n#:     noise recovery mode
+p#:     power savings ON, battery mode
+s#:     Activate Doppler Reading
+
+

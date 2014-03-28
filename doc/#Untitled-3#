@@ -1,0 +1,42 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def acquisitionRate(int value) { code += " a$value}" }
+def countRecords(boolean value) { code += " mc${asNum(value)}" }
+def deepSleep(boolean value) { code += " h${asNum(value)}" }
+def directNetworkAccess(boolean value) { code += " mn${asNum(value)}" }
+def doppler(boolean value) { code += " ms${asNum(value)}" }
+def firstTagInQueue(int value) { code += " f$value}" }
+def getBatteryStatus() { code += ' b' }
+def getRegisters() { code += ' w' }
+def getStore() { code += " ee" }  
+def getVersion() { code += ' v' }
+def inputChannel(int value) { assert value in 1..25; code += " r$value}" }
+def led(boolean value) { code += " md${asNum(value)}" }
+def monitorBattery(boolean value) { code += " mb${asNum(value)}" }
+def noiceRecovery(boolean value) { code += " mn${asNum(value)}" }
+def outputChannel(int value) { assert value in 1..25; code += " t$value}" }
+def powerSavings(boolean value) { code += " mp${asNum(value)}" }
+def rfidOn(boolean value) { code += " mx${asNum(value)}" }
+def serial(String value) { code += " <$value>"}
+def serialPinOn(boolean value) { code += " mp${asNum(value)}" }
+def signalPower(int value) { assert value in 0..3; code += " p$value" }
+def syncStrope(boolean value) { code += value ? '$' : '%' }  
+

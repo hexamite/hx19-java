@@ -14,6 +14,7 @@ dependencies {
     // compile 'org.bidib.jbidib.org.qbang.rxtx:rxtxcomm:2.2'
     compile fileTree('lib')
     compile 'org.codehaus.groovy:groovy:2.2.1'
+	compile 'org.codehaus.groovy:groovy-swing:2.1.4'
 
     // We use the awesome Spock testing and specification framework
     // testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
@@ -22,12 +23,17 @@ dependencies {
 
 task run(type: JavaExec, dependsOn: jar) {
     classpath = sourceSets.main.runtimeClasspath
-    main = 'com.hexamite.hx19.SerialComm'
+    main = 'com.hexamite.serial.SerialComm'
 }
 
 task run2(type: JavaExec, dependsOn: jar) {
 	classpath = sourceSets.main.runtimeClasspath
 	main = 'com.hexamite.hx19.device.Tracker'
+}
+
+task run3(type: JavaExec, dependsOn: jar) {
+	classpath = sourceSets.main.runtimeClasspath
+	main = 'com.hexamite.hx19.ui.Dashboard'
 }
 
 
