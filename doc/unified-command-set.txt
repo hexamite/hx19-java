@@ -3,37 +3,36 @@ Monitor
 ||Transmitter
 |||
 MRT  !    message.to: 'all'
-M    $    device.syncStrobe: true
-M    %    device.syncStrobe: false
+M    $    syncStrobe: true
+M    %    syncStrobe: false
 MRT  < >  serial
-MRT  ^#   senderMemory(count: <integer>)
 MRT  R#&  message.to: 'R#'
 MRT  R&   message.to: 'R'
 MRT  [    message()  { }                                        send the message
-MRT  a#:  device.acquisitionRate: <integer>
-MRT  b    device.expandMemoryRefs: true|false                   expand ^# to # chars from memory                                  
-MRT  bt   query.batteryStatus
-MRT  ee   device.store: true|false  
-M    f#   device.firstTagInQueue: <integer>
-MRT  h    device.deepSleep: true|false
-  T  mb#  device.monitorBattery: true|false
-  T  mc#  device.countRecords: true|false
-MRT  md#  device.ledOn: true|false
- R   mn#  device.noiceRecovery: true|false
-  T  mn#  device.directNetworkAccess: true|false
- RT  mp#  device.powerSavings: true|false
-  T  mp#  device.serialPinOn: true|false
- R   ms#  device.doppler: true|false
-  T  mx#  device.rfidOn: true|false
+MRT  a#:  acquisitionRate: <integer>
+MRT  b    expandMemoryRefs: true|false                   expand ^# to # chars from memory                                  
+MRT  bt   batteryStatus
+MRT  ee   store  
+M    f#   firstTagInQueue: <integer>
+MRT  h    deepSleep: true|false
+  T  mb#  monitorBattery: true|false
+  T  mc#  countRecords: true|false
+MRT  md#  ledOn: true|false
+ R   mn#  noiceRecovery: true|false
+  T  mn#  directNetworkAccess: true|false
+ RT  mp#  powerSavings: true|false
+  T  mp#  serialPinOn: true|false
+ R   ms#  doppler: true|false
+  T  mx#  rfidOn: true|false
   T  n#   
- RT  p#   device.signalPower: 0|1|2|3
-M    px#  device.signalPower: 0|1|2|3
-MRT  q#   device.receiverOutputResultQueue
-MRT  r#   device.inputChannel: 1..125
-M    s#   device.numTags
-MRT  t#   device.outputChannel: 1..125
-MRT  v    query.version: true|false
-MRT  w    query.workRegisters
+ RT  p#   signalPower: 0|1|2|3
+M    px#  signalPower: 0|1|2|3
+MRT  q#   receiverOutputResultQueue
+MRT  r#   inputChannel: 1..125
+M    s#   numTags
+MRT  t#   outputChannel: 1..125
+MRT  v    version: true|false
+MRT  w    workRegisters
 
 Example message
 

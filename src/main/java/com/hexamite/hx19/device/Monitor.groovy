@@ -7,5 +7,5 @@ import groovy.transform.Canonical
  **/
 @Canonical
 class Monitor extends RadioTransceiver {	
-	String toString() { "monitor(name: '$name')" }
+	// String toString() { "monitor(name: '$name')" }
 }

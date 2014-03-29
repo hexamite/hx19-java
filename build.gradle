@@ -36,6 +36,11 @@ task run3(type: JavaExec, dependsOn: jar) {
 	main = 'com.hexamite.hx19.ui.Dashboard'
 }
 
+task run4(type: JavaExec, dependsOn: jar) {
+	classpath = sourceSets.main.runtimeClasspath
+	main = 'com.hexamite.hx19.ui.Dashboard'
+}
+
 
 /**
 java -cp .:/usr/share/java/RXTXcomm.jar \

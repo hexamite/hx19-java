@@ -1,0 +1,8 @@
+{ ->
+	monitor(name: 'M21')
+	monitor(name: 'M22')
+	soundEmitter(name: 'S51', syncStrobe: true, inputChannel: 25) { point(x: 12345, y: 23456, z: 34567) }
+	soundEmitter(name: 'S52') { point(x: 12345, y: 23456, z: 34567) }
+	soundEmitter(name: 'S53') { point(x: 12345, y: 23456, z: 34567) }
+	soundListener(name: 'S41')
+}

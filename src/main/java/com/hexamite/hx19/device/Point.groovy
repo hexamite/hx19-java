@@ -8,6 +8,6 @@ class Point {
 	int y
 	int z
 	
-	String toString() { "Point(x: $x, y: $y, z: $z)" }
+	// String toString() { "Point(x: $x, y: $y, z: $z)" }
 	
 }

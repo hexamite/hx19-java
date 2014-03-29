@@ -9,28 +9,31 @@ import groovy.transform.Canonical;
 @Canonical
 class Tracker {
 	
-	Monitor monitor
+	List monitors = []
 	List soundEmitters = []
 	List soundListeners = []
 	
 	static void main(args) {
 		// assert args.size() == 1 : usage()
 		
+		/*
 		def builder = new ObjectGraphBuilder()
 		builder.classNameResolver = "com.hexamite.hx19.device"
 		
-		def monitor = 	builder.tracker {			monitor(name: 'S21')
+		def tracker = 	builder.tracker {			
+			monitor(name: 'S21')
 			soundEmitter(name: 'S21') { point(x: 12345, y: 23456, z: 34567) }
 			soundEmitter(name: 'S22') { point(x: 12345, y: 23456, z: 34567) }
 			soundEmitter(name: 'S23') { point(x: 12345, y: 23456, z: 34567) }
 			soundListener(name: 'S41')
 		}
-		println monitor
+		println tracker
+		*/
 	}
 	
 	String toString() {
 		"""\
-        ${monitor}
+        ${monitors.join('\n')}
         ${soundEmitters.join('\n')}
         ${soundListeners .join('\n')}""".replaceAll(/(?m)^ +/, '')
         

@@ -8,5 +8,5 @@ import groovy.transform.Canonical;
 @Canonical
 class SoundListener extends Located {
 
-	String toString() { "soundListener(name: '$name') {  ${point ?: ''} }" }
+	// String toString() { "soundListener(name: '$name') {  ${point ?: ''} }" }
 }
