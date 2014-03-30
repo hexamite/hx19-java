@@ -50,7 +50,17 @@ the frame changes, but the relative position of the devices is constant.
 
 Emitters and listeners can be given 3-dimenstional positions, with the positions of the remaining devices to be determined.
 
-## Low level message format
+## Message between HX19 devices
+
+The devices can send each other messages containing
+
+  - settings, such what signal strength to user or whether to blink the blue led.
+  - commands - e.g. store current settings in memory
+  - queries - e.g. what is the battari status
+  - serial output - 
+  - message forwards - asking the device to send an embedded message
+
+### Low level message format
 
 The raw format of messages sent to HX19 devices is:
 
@@ -60,11 +70,11 @@ In other words, a message begins with and address followed by zero or more comma
 
     <address> ::= ( <start-of-a-name> | '!' ) '&'
     
-That is, an address is the start of a device name or an exclamation sign denoting all devices. Either is followed by '&'
+That is, an address is the start of a device name or an exclamation sign denoting all devices. Either is followed by '&'. 
 
     <serial> ::= '<' <text> '>'
     
-That is, any text enclosed in '<' and '>'. The only restriction on text is that it cannot contian '<' or '>'.
+That is, any text enclosed in '<' and '>' should be sent to the serial port. The only restriction on text is that it cannot contian '<' or '>'.
 
     <forward> ::= '[' <message> ']'
     
@@ -102,7 +112,8 @@ The comments after each command describe the purpose of the command, the values 
 
 ### High level message builder
 
-In code messages can be constructed in a groovy script using a 'builder' that provides benefits such as auto-completions and context sensitive help.
+In code, messages can be constructed using a groovy 'builder' that, apart from being more readily understnadable, provides benefits such as 
+auto-completions and context sensitive help when used inside Eclipse.
 
 Example: 
 
@@ -112,7 +123,6 @@ Example:
         batteryStatus
         signalPower 3
         doppler off
-        sync
         message {
             serial 'abc'
             message('T') {
@@ -121,7 +131,26 @@ Example:
                 signalPower 1
             }
         }
-    }    
+    } 
+    
+In other words, we are asking device 'R21' to
+
+  - send 'xyz' to its serial port
+  - store current settings in eeprom
+  - give us battery status
+  - user signal power of 3
+  - send an embedded message to all devices
+  
+The embedded message in the last point is addressed to every device and asks them to do following:
+
+  - send 'abc' to their serial ports
+  - send an embedded message to all device that have name starting with 'R' (sound receivers).
+  
+That embedded message to all 'R' devices asks the follwing
+
+  - store current settings in eeprom
+  - broadcast the content of work registers
+  - set signal power to 1
 
 This is converted to the following low level format before it is sent:
 
