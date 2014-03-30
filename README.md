@@ -7,10 +7,16 @@ The code here will eventually provide a java library and user interface to contr
 ## Status
 
   - proof of concept for reading and writing to the device using 'java simple serial comm' library.
-  - Configuration syntax
+  - Configuration builder
   - Basic object representation of a positioning system
-  - UI showing the state of all devices
+  - Partial implementaion of UI showing the state of all devices
 
+As is the the system can by used to: 
+
+  - Low level communications with the system throught the serial port using hx19 native command set.
+  - Configure the system, that is, constructing an object graph that represents the participating devices.
+  - Construct hx19 messages in a higer level syntax.
+  
 Before building, [jssc.jar](https://github.com/scream3r/java-simple-serial-connector/releases/) must be downloaded and placed in the lib/ folder.
 
 The code is tested on Ubuntu Linux 12.4 with Java 7 but should work on any recent Linux, Mac or Windows / Java combination.
@@ -52,13 +58,11 @@ Emitters and listeners can be given 3-dimenstional positions, with the positions
 
 ## Message between HX19 devices
 
-The devices can send each other messages containing
+The devices can send messages to each other containing:
 
-  - settings, such what signal strength to user or whether to blink the blue led.
-  - commands - e.g. store current settings in memory
-  - queries - e.g. what is the battari status
-  - serial output - 
-  - message forwards - asking the device to send an embedded message
+  - commands - set or query operating parameters or perform an action. 
+  - serial output - strings to send to the recipient's serial port.
+  - message forwards - embedded message to transmit.
 
 ### Low level message format
 
@@ -66,7 +70,7 @@ The raw format of messages sent to HX19 devices is:
 
     <message> ::= <address> ( <command> | <serial> | <forward> )*
     
-In other words, a message begins with and address followed by zero or more commands, serial outputs of forwarded messages.
+In other words, a message begins with and address followed by zero or more commands, serial outputs or forwarded messages.
 
     <address> ::= ( <start-of-a-name> | '!' ) '&'
     
@@ -74,7 +78,7 @@ That is, an address is the start of a device name or an exclamation sign denotin
 
     <serial> ::= '<' <text> '>'
     
-That is, any text enclosed in '<' and '>' should be sent to the serial port. The only restriction on text is that it cannot contian '<' or '>'.
+That is, any text enclosed in '<' and '>' should be sent to the serial port. The text cannot contain '<' or '>'.
 
     <forward> ::= '[' <message> ']'
     
@@ -138,13 +142,13 @@ In other words, we are asking device 'R21' to
   - send 'xyz' to its serial port
   - store current settings in eeprom
   - give us battery status
-  - user signal power of 3
+  - use signal power of 3
   - send an embedded message to all devices
   
 The embedded message in the last point is addressed to every device and asks them to do following:
 
   - send 'abc' to their serial ports
-  - send an embedded message to all device that have name starting with 'R' (sound receivers).
+  - send an embedded message to all device that have name starting with 'T' (sound transmitters).
   
 That embedded message to all 'R' devices asks the follwing
 
