@@ -1,5 +1,1 @@
-package com.example.simple
-
-class Positioner {
-
-}
+package com.example.simpleclass Positioner {}

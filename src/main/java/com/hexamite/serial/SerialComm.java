@@ -1,9 +1,5 @@
 package com.hexamite.serial;
 
-// import gnu.io.CommPort;
-// import gnu.io.CommPortIdentifier;
-// import gnu.io.SerialPort;
-
 import jssc.SerialPort;
 import jssc.SerialPortException;
 
@@ -45,7 +41,12 @@ public class SerialComm {
             e.printStackTrace();
         }
     }
-    
+
+
+    /**
+     * Package `payload` into a valid HX19 package.
+     * Appends a slash, a hexadecimal checksum and a carrige return character to `payload`.
+     * */
     private byte[] pack(String payload) {
     	int sum = 0;
     	for(byte b: payload.getBytes()) {

@@ -1,8 +1,10 @@
 #hx19-java
 
-## Hexamite hx19 positioning system java library
+## Hexamite hx19 positioning system library for the java virtual machine
 
 The code here will eventually provide a java library and user interface to control and read Hexamites hx19 ultrasonic position devices.
+
+The source is mostly in Groovy, but can be used from other JVM languages such as Java, JPython, JRuby, Clojure, etc.
 
 ## Status
 
@@ -17,8 +19,6 @@ As is the the system can by used to:
   - Configure the system, that is, constructing an object graph that represents the participating devices.
   - Construct hx19 messages in a higer level syntax.
   
-Before building, [jssc.jar](https://github.com/scream3r/java-simple-serial-connector/releases/) must be downloaded and placed in the lib/ folder.
-
 The code is tested on Ubuntu Linux 12.4 with Java 7 but should work on any recent Linux, Mac or Windows / Java combination.
 
 ## Configuration
@@ -29,12 +29,10 @@ Configuration of the system is provided using a simple domain specific language.
 
     { ->
         monitor(name: 'M40')
-        frame(x: 4343, y: 3232, z: 4343, ax:0, ay: 180, az: 270) {  // optional
             soundEmitter(name: 'S41', x: 1245, y: 2345, z: 3456, inputChannel: 25, signalPower: 3)
             soundEmitter(name: 'S42', x: 2345, y: 3456, z: 4567, inputChannel: 25)
             soundEmitter(name: 'S43', x: 3456, y: 4567, z: 5678, inputChannel: 25)
             soundListener(name: 'R44', inputChannel: 25)
-        }
     }
 
 
@@ -50,9 +48,7 @@ Variables defined in that way can be used instead of literals, anywhere in the c
 The exact syntax of the configuration is restricted in the follwing way:
 
 The root element must be 'positionProvider'. This element can contain any number of device configurations, 
-that is `soundEmitter`, `soundListener` and `monitor` configurations. It can also contain `frame` elements which can
-make it easier to configure a set of devices mounted on a frame where only the position and orientation of 
-the frame changes, but the relative position of the devices is constant.
+that is `soundEmitter`, `soundListener` and `monitor` configurations. 
 
 Emitters and listeners can be given 3-dimenstional positions, with the positions of the remaining devices to be determined.
 
