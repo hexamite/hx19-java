@@ -12,28 +12,20 @@ dependencies {
     // compile 'org.rxtx:rxtxcomm:2.0-7pre1'
     // compile 'org.bidib.jbidib.org.qbang.rxtx:rxtxcomm:2.2'
     // compile fileTree('lib')
+    groovy group: 'org.apache.ivy', name:'ivy', version:'2.2.0'
+    compile 'org.zeromq:jeromq:0.3.2'
     compile 'org.codehaus.groovy:groovy:2.2.1'
     compile 'org.codehaus.groovy:groovy-swing:2.1.4'
     testCompile 'junit:junit:4.11'
     compile 'org.scream3r:jssc:2.8.0'
 }
 
-task run(type: JavaExec, dependsOn: jar) {
+task runSerial(type: JavaExec, dependsOn: jar) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'com.hexamite.serial.SerialComm'
 }
 
-task run2(type: JavaExec, dependsOn: jar) {
-	classpath = sourceSets.main.runtimeClasspath
-	main = 'com.hexamite.hx19.device.Tracker'
-}
-
-task run3(type: JavaExec, dependsOn: jar) {
-	classpath = sourceSets.main.runtimeClasspath
-	main = 'com.hexamite.hx19.ui.Dashboard'
-}
-
-task run4(type: JavaExec, dependsOn: jar) {
+task runDashboard(type: JavaExec, dependsOn: jar) {
 	classpath = sourceSets.main.runtimeClasspath
 	main = 'com.hexamite.hx19.ui.Dashboard'
 }

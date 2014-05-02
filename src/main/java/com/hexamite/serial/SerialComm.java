@@ -3,135 +3,142 @@ package com.hexamite.serial;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 
-import java.io.FileDescriptor;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import jssc.SerialPortEvent;
+import jssc.SerialPortEventListener;
 
+import java.util.concurrent.Semaphore;
+
+import org.zeromq.ZMQ;
+import org.zeromq.ZMQ.Context;
+import org.zeromq.ZMQ.Socket;
+
+// sudo chown tk /dev/ttyUSB3
+
+/**
+ * Maps serialport i/o to a pair of zeroMq sockets.
+ * */
 public class SerialComm {
-    /** Milliseconds to block while waiting for port open */
-    private static final int TIME_OUT = 2000;
 
-    /** Default bits per second for COM port. */
-    private static final int DATA_RATE = 250000;
+    private Semaphore semaphore = new Semaphore(1);
 
-    public SerialComm() {
-        super();
-    }
-
-    void testSerialComm1() {
+    public static void main(String[] args) {
         try {
-            SerialPort serialPort = new SerialPort("/dev/ttyUSB0");
-            System.out.println("Port opened: " + serialPort.openPort());
-            System.out.println("Params setted: " + serialPort.setParams(250000, 8, 1, 0));
-            System.out.println("\"Hello World!!!\" successfully writen to port: " + serialPort.writeBytes("M&$/97\r".getBytes()));
-            
-            
-            // while(true) {
-            //       // System.out.print(".");
-            //       serialPort.writeBytes("U".getBytes());
-            //       // Thread.sleep(100);
-            // }
-            
-            
-            
-            
-            System.out.println("Port closed: " + serialPort.closePort());
+            new SerialComm().testSerialComm3();
+            Thread.sleep(10000);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    public void testSerialComm3() throws InterruptedException {
+
+        SerialPort serialPort = null;
+        Context context = null;
+        Socket fromSerial = null;
+        Socket toSerial = null;
+
+
+        try {
+            context = ZMQ.context(1);
+
+            fromSerial = context.socket(ZMQ.PUB);
+            fromSerial.bind("tcp://*:5555");
+
+            toSerial = context.socket(ZMQ.SUB);
+            toSerial.connect("tcp://*:5556");
+            toSerial.subscribe(ZMQ.SUBSCRIPTION_ALL);
+
+            serialPort = new SerialPort("/dev/ttyUSB0");
+            serialPort.openPort();
+            serialPort.setParams(250000, 8, 1, 0);
+            int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR;
+            serialPort.setEventsMask(mask);
+            serialPort.addEventListener(new SerialPortReader(serialPort, fromSerial));
+
+            serialPort.writeBytes(pack("M& <send this huuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuge message>"));
+
+            // map(toSerial, serialPort);
+
+            Thread.sleep(60000);
+
+        } catch (SerialPortException e) {
+            e.printStackTrace();
+        } finally {
+            if(serialPort != null) {
+                try {
+                    serialPort.closePort();
+                } catch (SerialPortException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(toSerial != null) {
+                toSerial.close();
+            }
+            if(fromSerial != null) {
+                fromSerial.close();
+            }
+            if(context != null) {
+                context.term();
+            }
+        }
+    }
+
+    private void map(Socket toSerial, SerialPort serialPort) throws SerialPortException {
+        while(!Thread.currentThread().isInterrupted()) {
+            byte[] bytes = toSerial.recv();
+            serialPort.writeBytes(bytes);
+            System.out.println("SerialComm: toSerial: " + bytes.toString());
+        }
+    }
 
     /**
      * Package `payload` into a valid HX19 package.
      * Appends a slash, a hexadecimal checksum and a carrige return character to `payload`.
      * */
     private byte[] pack(String payload) {
-    	int sum = 0;
-    	for(byte b: payload.getBytes()) {
-    		sum += b;
-    	}
-    	return (payload + "/" + String.format("%X", sum) + "\r").getBytes();
+        int sum = 0;
+        for(byte b: payload.getBytes()) {
+            sum += b;
+        }
+        return (payload + "/" + String.format("%X", sum) + "\r").getBytes();
     }
-           
-    public void testSerialComm() {
-        SerialPort serialPort = new SerialPort("/dev/ttyUSB0");
-        try {
-            serialPort.openPort();//Open serial port
-            serialPort.setParams(250000, 8, 1, 0);//Set params.
-	        // serialPort.writeBytes(pack("M&$"));
-            
-            for(int i = 0; i < 200; i++) {
-	            byte[] buffer;
-	            System.out.println("--");
-	            do {
-	                buffer = serialPort.readBytes(1);//Read 1 byte from serial port
-	                if(buffer.length > 0 && buffer[0] != '\r') {
-	                	System.out.print(new String(buffer));
-	                }
-	            } while(buffer[0] != '\r');
-	            System.out.println("--");
+
+    public static class SerialPortReader implements SerialPortEventListener {
+
+        private SerialPort serialPort;
+        private Socket fromSerial;
+
+        SerialPortReader(SerialPort serialPort, Socket out) {
+            this.serialPort = serialPort;
+            this.fromSerial = out;
+        }
+
+        public void serialEvent(SerialPortEvent event) {
+            try {
+                if(event.isRXCHAR()){
+                    int n = event.getEventValue();
+                    byte buffer[] = serialPort.readBytes(n);
+                    System.out.println("SerialComm: fromSerial: " + new String(buffer));
+                    fromSerial.send(new String(buffer));
+                    System.out.println("SerialComm: Sent to socket.");
+                } else if(event.isCTS()){
+                    if(event.getEventValue() == 1){
+                        System.out.println("SerialComm: CTS - ON");
+                    } else {
+                        System.out.println("SerialComm: CTS - OFF");
+                    }
+                } else if(event.isDSR()){
+                    if(event.getEventValue() == 1){
+                        System.out.println("SerialComm: DSR - ON");
+                    } else {
+                        System.out.println("SerialComm: DSR - OFF");
+                    }
+                }
+            } catch (SerialPortException e) {
+                e.printStackTrace();
             }
-            serialPort.closePort();//Close serial port
-        }
-        catch (SerialPortException ex) {
-            System.out.println(ex);
-		}
-    }
-
-            
-    // void testSerialComm0() {
-    //     try {
-    //         CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier("/dev/ttyUSB0");
-    //         if (portIdentifier.isCurrentlyOwned()) {
-    //             System.out.println("Error: Port is currently in use");
-    //         } else {
-    //             CommPort commPort = portIdentifier.open(this.getClass().getName(), 2000);
-    //             if (commPort instanceof SerialPort) {
-    //                 SerialPort serialPort = (SerialPort) commPort;
-    //                 serialPort.setSerialPortParams(230400, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-    //                 System.out.println("speed: " + serialPort.getBaudRate());
-    // 
-    //                 InputStream in_ = serialPort.getInputStream();
-    //                 
-    //                 // byte[] buffer = new byte[1024];
-    //                 // int len = -1;
-    //                 // int i = 0;
-    //                 // while (i++ < 4 && (len = in_.read(buffer)) > -1) {
-    //                 //     System.out.print(new String(buffer, 0, len));
-    //                 // }
-    //                 
-    //                 // def c = in_.read()
-    //                 // for(int i=0; i < 4 && c >= -1; i++) {
-    //                 //     println "> $c"
-    //                 //     c = in_.read()
-    //                 // }
-    //                 
-    //                 OutputStream out = serialPort.getOutputStream();
-    //                 out.write("M&$/97\r".getBytes());
-    //                 // while(true) {
-    //                 //       // System.out.print(".");
-    //                 //       out.write("U".getBytes());
-    //                 //       // Thread.sleep(100);
-    //                 // }
-    //                 out.flush();
-    //                 out.close();
-    //             } else {
-    //                 System.out.println("Error: Only serial ports are handled by this example.");
-    //             }
-    //         }
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
-
-    public static void main(String[] args) {
-        try {
-            // (new SerialComm()).connect("/dev/ttyUSB0");
-            new SerialComm().testSerialComm();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
+
 }
+

@@ -29,10 +29,10 @@ Configuration of the system is provided using a simple domain specific language.
 
     { ->
         monitor(name: 'M40')
-            soundEmitter(name: 'S41', x: 1245, y: 2345, z: 3456, inputChannel: 25, signalPower: 3)
-            soundEmitter(name: 'S42', x: 2345, y: 3456, z: 4567, inputChannel: 25)
-            soundEmitter(name: 'S43', x: 3456, y: 4567, z: 5678, inputChannel: 25)
-            soundListener(name: 'R44', inputChannel: 25)
+        soundEmitter(name: 'S41', x: 1245, y: 2345, z: 3456, inputChannel: 25, signalPower: 3)
+        soundEmitter(name: 'S42', x: 2345, y: 3456, z: 4567, inputChannel: 25)
+        soundEmitter(name: 'S43', x: 3456, y: 4567, z: 5678, inputChannel: 25)
+        soundListener(name: 'R44', inputChannel: 25)
     }
 
 
@@ -112,10 +112,11 @@ The comments after each command describe the purpose of the command, the values 
 
 ### High level message builder
 
-In code, messages can be constructed using a groovy 'builder' that, apart from being more readily understnadable, provides benefits such as 
-auto-completions and context sensitive help when used inside Eclipse.
+In code, messages can be constructed using a groovy 'builder' that, apart from being more readily understandable,
+provides benefits such as suggestions, auto-completions and context sensitive help when used inside an IDE such as
+Eclipse, Netbeans or Idea.
 
-Example: 
+The following example is illustrates the syntax, it is not necessarily meaningful for any specific application.
 
     message('R21') {
         serial 'xyz'
@@ -144,9 +145,9 @@ In other words, we are asking device 'R21' to
 The embedded message in the last point is addressed to every device and asks them to do following:
 
   - send 'abc' to their serial ports
-  - send an embedded message to all device that have name starting with 'T' (sound transmitters).
+  - send an embedded message to all devices that have name starting with 'T' (sound transmitters).
   
-That embedded message to all 'R' devices asks the follwing
+That embedded message to all 'R' devices asks the following
 
   - store current settings in eeprom
   - broadcast the content of work registers
