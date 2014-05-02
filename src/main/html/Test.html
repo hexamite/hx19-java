@@ -1,0 +1,54 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ZmqSocket.js</title>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script language="JavaScript" src='ZmqSocket.js'></script>
+</head>
+<body>
+ 
+<script language="JavaScript">
+ var socket = new ZmqSocket ();
+ var ready = false;
+
+$(function() {
+     $('#log').append("here\n")
+})
+
+ socket.onopen = function () { ready = true; };
+ socket.onmessage = function () { if (socket.available ()) {
+     var m = socket.recv ();
+     // alert (m);
+     $('#log').append(m + '\n')
+ } else {
+     alert ('Assertion failure!'); }
+ };
+ socket.onclose = function () { alert ('close'); };
+ socket.onerror = function (msg) { alert (msg); };
+
+ socket.connect ("localhost", 5555);
+</script>
+ 
+<input type='text' id='in' />
+<input type='submit' value='Send' onclick='if (!ready) return; var t = document.getElementById("in").value; socket.send (["", t]); ' />
+ 
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+ id="ZmqSocketFlash" width="0" height="0"
+ codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab">
+ <param name="movie" value="ZmqSocketMain.swf" />
+ <param name="allowScriptAccess" value="sameDomain" />
+ <embed src="ZmqSocketMain.swf" quality="high" 
+  width="0" height="0" name="ZmqSocketFlash" align="middle"
+  play="true" loop="false" allowScriptAccess="sameDomain"
+  type="application/x-shockwave-flash"
+  pluginspage="http://www.macromedia.com/go/getflashplayer">
+ </embed>
+</object>
+
+<textarea id="log">
+
+</textarea>
+
+</body>
+</html>
+ 
