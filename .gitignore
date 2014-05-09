@@ -7,7 +7,6 @@
 /.settings/
 /bin
 /build/
-/gradle/
 /lib/RXTXcomm.jar
 /lib/jssc.jar
 /out
