@@ -1,6 +1,8 @@
-# HX19 Ultrasound Positioning Devices
+# Command line utilites and Java library for operating and maintaining HX19 Ultrasound Positioning Devices
 
-The HX19 devices allow positioning of robots, robot arms, quadcopthers, vehicles, etc, with a high precision and
+## About HX19 Ultrasound Positioning Devices
+
+The HX19 devices allow positioning of robots, robot arms, quadcopthers, vehicles, etc, with high precision and
 frequency.
 
 The system consists of a few Transmitters, Receivers and at least one Monitor attached to a PC to communicate with the
@@ -9,10 +11,10 @@ system.
 With at least 3 of the devices in a fixed position (or just 2 for 2D positioning) the position of the rest can be
 calculated.
 
-## Command line utilites and Java library for operating and maintaining HX19 systems.
+## About this project
 
-The code here provides command line tools and libraries to operate and interface with the HX19 ultrasound positioning
-devices.
+The code provided in this project provides command line tools and libraries to operate and interface with the HX19
+ultrasound positioning devices.
 
 The tools are written in Groovy and leverage [ZeroMQ](http://zeromq.org) to allow local or network access to devices from
 a number of [programming languages and platforms](http://zeromq.org/bindings:_start).
@@ -36,7 +38,7 @@ calculations. They provide only the distances between Receivers and Transmitters
 
 ## Roadmap
 
-The next update (expected in a few weeks) is a positioning calculations so that a stream of coordinates can be pushed
+In the next few weeks we will add positioning calculations so that a stream of device coordinates can be pushed
 to listening application(s).
 
 Longer term (a few months) we want to provide a GUI based interface to the system that leverages these tools.
