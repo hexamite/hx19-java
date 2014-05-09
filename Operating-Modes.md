@@ -3,6 +3,8 @@
 ## Synchronous Measurement Mode
 
 In this mode the system operates at high frequency and each measurement cycle is initiated by the monitor.
+
+(View this page in [raw](https://github.com/hexamite/hx19-java/raw/master/Operating-Modes.md) mode to see the whole breadth of the sequence diagrams.)
     
      Coord-Subscriber   Raw-Subscriber      Serial server        Monitor 11      Transmitter 21     Transmitter 22    Receiver 31        Receiver 32        Receiver 33       Time
                                                                                                                                                                       
