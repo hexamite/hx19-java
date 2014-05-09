@@ -47,4 +47,4 @@ Longer term (a few months) we want to provide a GUI based interface to the syste
 
 ## See also
 
-Visit [Hexamite](http://hexamite.com) for more details.
+Visit [Hexamite](http://hexamite.com) for more details..
