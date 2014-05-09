@@ -1,4 +1,6 @@
-# Command line utilites and Java library for operating and maintaining HX19 Ultrasound Positioning Devices
+# HX19 interface
+
+Command line utilities and Java library for operating, maintaining and interfacing HX19 ultrasound positioning devices.
 
 ## About HX19 Ultrasound Positioning Devices
 
