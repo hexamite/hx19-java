@@ -18,7 +18,7 @@ calculated.
 The code provided in this project provides command line tools and libraries to operate and interface with the HX19
 ultrasound positioning devices.
 
-The tools are written in Groovy and leverage [ZeroMQ](http://zeromq.org) to allow local or network access to devices from
+The tools are written in Java and Groovy and leverage [ZeroMQ](http://zeromq.org) to allow local or network access to devices from
 a number of [programming languages and platforms](http://zeromq.org/bindings:_start).
 
 The source is mostly in Groovy, but can be linked from other JVM languages such as Java, JPython, JRuby,

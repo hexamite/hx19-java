@@ -1,11 +1,13 @@
 # HX19 modes
 
-## Synchronous Measurement Mode
+## Synchronous Mode
 
-In this mode the system operates at high frequency and each measurement cycle is initiated by the monitor.
+In this mode the system operates at high frequency (62 ms cycles) and each measurement cycle is initiated by the monitor.
+The sequence diagram below shows a typical setup.
 
-(View this page in [raw](https://github.com/hexamite/hx19-java/raw/master/Operating-Modes.md) mode to see the whole breadth of the sequence diagrams.)
-    
+(View this page in [raw](https://github.com/hexamite/hx19-java/raw/master/Operating-Modes.md) mode to see the whole
+width of the sequence diagrams.)
+
      Coord-Subscriber   Raw-Subscriber      Serial server        Monitor 11      Transmitter 21     Transmitter 22    Receiver 31        Receiver 32        Receiver 33       Time
                                                                                                                                                                       
              │                 │                  │                  │                  │                  │                │                  │                  │                
@@ -36,23 +38,31 @@ In this mode the system operates at high frequency and each measurement cycle is
              v                 v                  v                  v                  v                  v                v                  v                  v            v
             
 
-1:   The monitor connected to the PC initiates the synchronous measurement cycle by sending out the class and address of the first transmitter in the system.
+             <------------- ZeroMQ --------------> <----- RS232 ----> <-----------------------------------Radio Frequency --------------------------------------->
+
+1:   The monitor connected to the PC initiates the synchronous measurement cycle by sending out the class and address of
+     the first transmitter in the system.
   
-2:   The transmitter transmits an ultrasound pulse and sends out an 'X' followed by its ID. Each receiver pickus up both the pulse and the X<ID> in the 
-     system and calculates the distance from difference between the sound and the radio frequency signal. The monitor pics up the signal as well and forwards it 
-     through the serial server on the PC to any ZeroMQ raw-subscribers.
+2:   The transmitter transmits an ultrasound pulse and sends out an 'X' followed by its ID. Each receiver picks up both
+     the pulse and the X<ID> and calculates its distance from the transmitter from the difference between the sound and
+     the radio frequency signal.
+
+     (The monitor pics up the signal as well and forwards it through the serial server on the PC to any ZeroMQ
+     raw-subscribers.)
   
-3-5: Each receiver waits for its predetermined interval and the sends out the distance it calculated in step 2. The distance flows through the monitor, and the
-     serial server to any ZeroMQ distance subscribers.
+3-5: Each receiver waits for its predetermined interval and the broadcasts the distance it calculated in step 2. The
+     distance flows through the monitor, and the serial server to any ZeroMQ 'raw' subscribers.
        
-6:   (Not available yet, see [roadmap](README.md#roadmap)) The serial server calculates the position coordinates of the movable elements of the system from the known positions of the fixed elements and the distances
-     between receivers and transmitters. In the case depicted above it would make sence to have the transmitters movable and the receivers fixed, but any configuration
-     is possible as long as there are three distances from fixed positions available for each movable device.
+6:   (Not available yet, see [roadmap](README.md#roadmap)) The serial server calculates the position coordinates of the
+     movable elements of the system from the known positions of the fixed elements and the distances between receivers
+     and transmitters. In the case depicted above it would make sence to have the transmitters movable and the receivers
+     fixed, but any configuration is possible as long as there are three distances from fixed positions available for
+     each movable device.
 
 
 ## Idle Mode
 
-Idle mode identical to the Synchrounous mode except that the transmitters themselves initiate the measurement
+Idle mode is identical to the Synchrounous mode except that the transmitters themselves initiate the measurement
 cycle and the interval between the cycles is randomly chosen each time by each tranmitter to be either 4 or 8 seconds.
 The randomness makes collisions a little bit less likely. Collisions result in a lost measurement but are very rare
 in practice.
@@ -86,8 +96,8 @@ Upload mode allows the uploader to send new code to a class of devices through t
         failure
     
     
-1: The upload command sends a header line through a ZeroMQ socket to the serial server which forwards it to the monitor which transmits it over
-   the air where it is picked up by the devices that match the address of the message.
+1: The upload command sends a header line through a ZeroMQ socket to the serial server which forwards it to the monitor
+   which transmits it over the air where it is picked up by the devices that match the address of the message.
    
 2: The monitor responds with a '#' if the checksum matched.
    
