@@ -1,10 +1,5 @@
-*.iml
 *_
-/.classpath
 /.gradle/
-/.idea/
-/.project
-/.settings/
 /bin
 /build/
 /lib/RXTXcomm.jar

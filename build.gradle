@@ -12,6 +12,7 @@ dependencies {
     compile 'org.zeromq:jeromq:0.3.2'
     compile 'org.codehaus.groovy:groovy:2.2.1'
     compile 'org.codehaus.groovy:groovy-swing:2.1.4'
+    compile 'commons-cli:commons-cli:1.2'
     testCompile 'junit:junit:4.11'
     compile 'org.scream3r:jssc:2.8.0'
 }
