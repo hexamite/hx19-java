@@ -23,14 +23,13 @@ devices from a number of [programming languages and platforms](http://zeromq.org
 
 ## Requirements
 
-[Java 6](http://openjdk.java.net/) or higher.
-
-[Groovy 2.0](http://groovy.codehaus.org/) or higher.
+  - [Java 6](http://openjdk.java.net/) or higher.
+  - [Groovy 2.0](http://groovy.codehaus.org/) or higher.
 
 ## Dependencies
 
-jssc-2.8.0.jar - Serial pot access.
-jeromq-0.3.2.jar - ZeroMQ pure Java implementation.
+  - jssc-2.8.0.jar - Serial port access.
+  - jeromq-0.3.2.jar - ZeroMQ pure Java implementation.
 
 ## Building and running
 
@@ -83,8 +82,6 @@ and they are still missing the position calculations. They provide only the dist
 
 In the next few weeks we will add positioning calculations so that a stream of device coordinates can be pushed
 to listening application(s).
-
-Longer term (a few months) we want to provide a GUI based interface to the system that leverages these tools.
 
 ## See also
 
