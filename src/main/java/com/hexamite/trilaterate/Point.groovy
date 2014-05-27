@@ -1,7 +1,10 @@
-package com.hexamite.trilat
+package com.hexamite.trilaterate
 
 import groovy.transform.Canonical
 
+/**
+ * A Cartesian point with with basic vector addition and subtraction.
+ * */
 @Canonical
 class Point {
     int x, y, z

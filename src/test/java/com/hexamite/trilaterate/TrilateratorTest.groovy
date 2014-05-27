@@ -1,8 +1,8 @@
-package com.hexamite.trilat
+package com.hexamite.trilaterate
 
 import org.junit.*
 
-class TrilatTest {
+class TrilateratorTest {
 
     @Test
     void testTrilaterate() {
@@ -23,7 +23,7 @@ class TrilatTest {
                 3073
         ]
 
-        assert new Trilat().trilaterate(fixed, dists) == new Point(1734, 1967, 2979)
+        assert new Trilaterator(fixed).trilaterate(dists) == new Point(1734, 1967, 2979)
 
     }
 }

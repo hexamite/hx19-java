@@ -1,16 +1,32 @@
-package com.hexamite.trilat
+package com.hexamite.trilaterate
+
+import com.hexamite.cdi.config.Config
+import com.hexamite.cdi.config.Script
+
+import javax.inject.Inject
 
 /**
  * Trilaterates a point from distances to three known positions.
  */
-class Trilat {
+class Trilaterator {
+
+    private List<Point> norms // The normalized coordinates of the fixed points in the system
+    private Point origin // The point in the fixed system that will move to the origin in the normalized system
+
+    /**
+     * @param fixed The coordinates of the fixed points in the system.
+     * */
+    @Inject @Config @Script(file='example/conf/fixedPoints.groovy') List<Point> fixed
+
+    def Trilaterator() {
+        origin = fixed[0]
+        norms = normalize(origin, fixed)
+    }
 
     /**
      * Trilaterates a point from distances to three known positions.
      */
-    def trilaterate(List fixed, List dists) {
-        def origin = fixed[0]
-        def norms = normalize(origin, fixed)
+    def trilaterate(List dists) {
         def p = trilaterateNormalized(norms, dists)
         return denormalize(origin, p)
     }

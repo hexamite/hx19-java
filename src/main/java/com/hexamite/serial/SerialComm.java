@@ -55,14 +55,14 @@ public class SerialComm {
 
 
         try {
-            System.out.println("tcp://*:5556 (SUB) -> " + comport + " -> tcp://*:5555 (PUB)");
+            System.out.println("tcp://*:$PORT_TO_SERIAL (SUB) -> " + comport + " -> tcp://*:$PORT_FROM_SERIAL (PUB)");
             context = ZMQ.context(1);
 
             fromSerial = context.socket(ZMQ.PUB);
-            fromSerial.bind("tcp://*:5555");
+            fromSerial.bind("tcp://*:$PORT_FROM_SERIAL");
 
             toSerial = context.socket(ZMQ.SUB);
-            toSerial.bind("tcp://*:5556");
+            toSerial.bind("tcp://*:$PORT_TO_SERIAL");
             toSerial.subscribe(ZMQ.SUBSCRIPTION_ALL);
             Thread.sleep(10);
 
