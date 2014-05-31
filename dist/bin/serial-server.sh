@@ -17,4 +17,4 @@
 #     sudo chown tk /dev/ttyUSB0
 #
 
-java -cp 'lib/*:build/libs/hx19-java.jar' com.hexamite.serial.SerialComm $1
+java -cp '../libs/*' com.hexamite.serial.SerialComm $1

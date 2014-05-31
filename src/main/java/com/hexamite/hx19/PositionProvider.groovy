@@ -1,11 +1,14 @@
-package com.hexamite.trilaterate
+package com.hexamite.hx19
 
 import com.hexamite.cdi.config.Config
 import com.hexamite.cdi.WeldContext
+import com.hexamite.cdi.config.Producer
+import com.hexamite.trilaterate.Point
+import com.hexamite.trilaterate.Trilaterator
 import org.zeromq.ZMQ
 
-import javax.annotation.PostConstruct
 import javax.inject.Inject
+import java.util.logging.Logger
 
 /**
  * Subscribes to a stream of distance measurements from HX19 receivers, parses them, collects them into blocks corresponding
@@ -17,9 +20,14 @@ import javax.inject.Inject
  * */
 class PositionProvider {
 
+    static {
+        System.properties.host = 'localhost'
+    }
+
     private static final int PORT_FROM_SERIAL = 5555
     private static final int PORT_POSITIONS = 5558
 
+    @Inject private Logger logger
     @Inject private Trilaterator trilaterator
     @Inject private Parser parser
     @Inject @Config private String host
@@ -28,14 +36,9 @@ class PositionProvider {
     private ZMQ.Socket distanceSubscriber
     private ZMQ.Socket positionPublisher
 
-    def fixedPoints = Eval.eval('/home/tk/workspace/hx19-java/example/conf/fixedPoints.groovy' as File)
-
     static void main(args) {
         def provider = WeldContext.INSTANCE.getBean(PositionProvider)
-    }
-
-    PositionProvider(/**String host**/) {
-        this.host = 'localhost' //host
+        assert provider.host == 'localhost'
     }
 
     /**
@@ -43,10 +46,8 @@ class PositionProvider {
      * calculates positions and publishes them on the positions port.
      * The format of the output is 'transmitter x y z' as bytes.
      * */
-    @PostConstruct
-    def connect() {
-        println 'connecting...'
-        context =  ZMQ.context(1)
+    def start(close) {
+        logger.info 'connecting...'
 
         distanceSubscriber = context.socket(ZMQ.SUB)
         distanceSubscriber.connect("tcp://$host:$PORT_FROM_SERIAL")
@@ -55,24 +56,20 @@ class PositionProvider {
         positionPublisher = context.socket(ZMQ.PUB);
         positionPublisher.bind("tcp://*:$PORT_POSITIONS");
 
-        trilaterator = new Trilaterator(fixedPoints.sort().values().toList())
-
         parser = new Parser()
         parser.consume = { transmitter, distances -> consumeBlock(transmitter, distances)}
 
-        while (true) {
+        while (!close()) {
+            logger.info 'Receiving...'
             byte[] bytes = distanceSubscriber.recv()
+            logger.info "Received ${new String(bytes)}"
             parser.parse(new String(bytes))
         }
     }
 
-    def consumeBlock(int transmitter, Map distances) {
-        Point p = trilaterator.trilaterate(distances.sort().values())
-        positionPublisher.send("$transmitter $p.x $p.y $p.z".toByteArray())
+    def private consumeBlock(int transmitter, Map distances) {
+        Point p = trilaterator.trilaterate(distances.sort().values().toList())
+        println "publishing distanes $transmitter $p.x $p.y $p.z"
+        positionPublisher.send("$transmitter $p.x $p.y $p.z".bytes)
     }
-
-    def eval(file) {
-
-    }
-
 }

@@ -1,5 +1,6 @@
-package com.hexamite.trilaterate
+package com.hexamite.hx19
 
+import com.hexamite.hx19.Parser
 import org.jglue.cdiunit.CdiRunner
 import org.junit.Test
 import org.junit.runner.RunWith

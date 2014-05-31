@@ -11,6 +11,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
 @Qualifier
 @Target([TYPE, METHOD, FIELD, PARAMETER])
 @Retention(RUNTIME)
-public @interface Script {
-    @Nonbinding String file() default ""
+public @interface ScriptFile {
+    @Nonbinding String value() default ""
 }

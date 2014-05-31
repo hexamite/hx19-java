@@ -1,6 +1,7 @@
 package com.hexamite.cdi.config
 
 import com.hexamite.util.Evaluate
+import org.zeromq.ZMQ
 
 import java.util.logging.Logger
 import javax.enterprise.inject.Produces;
@@ -8,14 +9,14 @@ import javax.enterprise.inject.spi.InjectionPoint;
 
 public class Producer {
 
-    @Produces @Config @Script Object getConfigurationScript(InjectionPoint p) {
-        def annotation = p.getAnnotated().getAnnotation(Script)
-        File file = annotation.file() as File
+    @Produces @Config @ScriptFile Object getConfigurationScript(InjectionPoint p) {
+        def annotation = p.getAnnotated().getAnnotation(ScriptFile)
+        File file = annotation.value() as File
         new Evaluate(file.text).eval()
     }
 
     @Produces @Config String getStringConfiguration(InjectionPoint p) {
-        return (String) getConfiguration(p);
+        (String) getConfiguration(p);
     }
 
     def getConfiguration(InjectionPoint p) {
@@ -56,5 +57,13 @@ public class Producer {
             return value
         }
         return System.properties[simpleName]
+    }
+
+    public @Produces ZMQ.Context zmqContext(InjectionPoint p) {
+        ZMQ.context(1);
+    }
+
+    public @Produces Logger logger(InjectionPoint p) {
+        Logger.getLogger(p.member.declaringClass.name);
     }
 }

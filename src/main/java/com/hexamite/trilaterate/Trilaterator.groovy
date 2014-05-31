@@ -1,8 +1,9 @@
 package com.hexamite.trilaterate
 
 import com.hexamite.cdi.config.Config
-import com.hexamite.cdi.config.Script
+import com.hexamite.cdi.config.ScriptFile
 
+import javax.annotation.PostConstruct
 import javax.inject.Inject
 
 /**
@@ -10,15 +11,15 @@ import javax.inject.Inject
  */
 class Trilaterator {
 
+    @Inject com.hexamite.cdi.config.Producer producer
+    @Inject @Config @ScriptFile('dist/conf/fixedPoints.groovy')
+    private def fixed
+
     private List<Point> norms // The normalized coordinates of the fixed points in the system
     private Point origin // The point in the fixed system that will move to the origin in the normalized system
 
-    /**
-     * @param fixed The coordinates of the fixed points in the system.
-     * */
-    @Inject @Config @Script(file='example/conf/fixedPoints.groovy') List<Point> fixed
-
-    def Trilaterator() {
+    @PostConstruct
+    def postConstruct() {
         origin = fixed[0]
         norms = normalize(origin, fixed)
     }

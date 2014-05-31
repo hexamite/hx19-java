@@ -8,14 +8,20 @@ repositories {
 }
 
 dependencies {
-    groovy group: 'org.apache.ivy', name:'ivy', version:'2.2.0'
-    compile 'org.zeromq:jeromq:0.3.2'
+    compile 'commons-cli:commons-cli:1.2'
+    compile 'org.apache.ivy:ivy:2.2.0'
     compile 'org.codehaus.groovy:groovy:2.2.1'
     compile 'org.codehaus.groovy:groovy-swing:2.1.4'
     compile 'org.jboss.weld.se:weld-se:2.2.1.Final'
-    compile 'commons-cli:commons-cli:1.2'
     compile 'org.scream3r:jssc:2.8.0'
+    compile 'org.zeromq:jeromq:0.3.2'
     testCompile 'junit:junit:4.11'
     testCompile 'org.jglue.cdi-unit:cdi-unit:3.0.1'
 }
 
+task dist(type: Copy, dependsOn: 'jar') {
+    into 'dist/lib'
+    from jar.archivePath, 'lib'
+}
+
+build.dependsOn dist

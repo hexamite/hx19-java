@@ -1,4 +1,4 @@
-package com.hexamite.trilaterate
+package com.hexamite.hx19
 
 import javax.inject.Inject
 import java.util.logging.Logger
@@ -10,7 +10,7 @@ import java.util.logging.Logger
  */
 class Parser {
 
-    Logger logger = Logger.getLogger(Parser.name)
+    @Inject Logger logger
 
     private static final def DISTANCE_PATTERN = /^R(\d+) P(\d+)_(\d+) A(\d+)$/    // R21 P31_453 A1345
 
@@ -33,12 +33,13 @@ class Parser {
                 distances = [:]
                 key = [transmitter, block]
             }
+            println "parsed $distance"
             distances[receiver as int] = (distance as int)
             match = true
         }
 
         if(!match) {
-            logger.info  "Unreckognized '$line"
+            println  "Unreckognized '$line'"
         }
 
     }

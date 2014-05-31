@@ -1,19 +1,18 @@
 package com.hexamite.trilaterate
 
+import org.jglue.cdiunit.CdiRunner
 import org.junit.*
+import org.junit.runner.RunWith
 
+import javax.inject.Inject
+
+@RunWith(CdiRunner)
 class TrilateratorTest {
+
+    @Inject Trilaterator trilaterator
 
     @Test
     void testTrilaterate() {
-
-        // The locations of the fixed points
-
-        def fixed = [
-                new Point(1000, 1000, 0),
-                new Point(2140, 1000, 0),
-                new Point(1000, 2140, 0)
-        ]
 
         // Distance of the unknown point to the fixed points
 
@@ -23,7 +22,7 @@ class TrilateratorTest {
                 3073
         ]
 
-        assert new Trilaterator(fixed).trilaterate(dists) == new Point(1734, 1967, 2979)
+        assert trilaterator.trilaterate(dists) == new Point(1734, 1967, 2979)
 
     }
 }
