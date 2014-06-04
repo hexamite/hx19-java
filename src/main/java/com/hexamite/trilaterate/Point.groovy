@@ -32,4 +32,8 @@ class Point {
                 z - p.z
         )
     }
+
+    def abs() {
+        Math.sqrt(x*x + y*y + z*z)
+    }
 }

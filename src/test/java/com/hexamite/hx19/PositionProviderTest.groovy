@@ -7,6 +7,7 @@ import org.jglue.cdiunit.CdiRunner
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.zeromq.ZMQ
+import org.zeromq.ZMQException
 
 import javax.inject.Inject
 
@@ -16,6 +17,8 @@ class PositionProviderTest {
 
     static {
         System.properties['host1'] = 'localhost'
+        // date, source, logger, level, message, thrown
+        System.properties['java.util.logging.SimpleFormatter.format']='%4$s %2$s%n %1$tM:%1$tS %5$s %6$s%n'
     }
 
     private final static int PORT_FROM_SERIAL = 5555; // pub
@@ -62,12 +65,26 @@ class PositionProviderTest {
 
     def subscribeToPositions() {
         new Thread().start {
-            Thread.sleep(1000)
             positionSubscriber = context.socket(ZMQ.SUB);
             positionSubscriber.connect("tcp://*:$PORT_POSITIONS");
-            byte[] bytes = positionSubscriber.recv()
-            println("##################### Received position ${new String(bytes) }")
+            forTime(3000) {
+                println("##################### Receiving position ...")
+                byte[] bytes = positionSubscriber.recv()
+                if(bytes) {
+                    println("##################### Received position ${new String(bytes)}")
+                }
+                Thread.sleep(1000)
+            }
             positionSubscriber.close()
+        }
+    }
+
+    def now() { System.currentTimeMillis()}
+
+    def forTime(long interval, Closure closure) {
+        long t0 = now()
+        while(now() < t0 + interval) {
+            closure()
         }
     }
 }

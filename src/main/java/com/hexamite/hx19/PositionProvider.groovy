@@ -69,7 +69,7 @@ class PositionProvider {
 
     def private consumeBlock(int transmitter, Map distances) {
         Point p = trilaterator.trilaterate(distances.sort().values().toList())
-        println "publishing distanes $transmitter $p.x $p.y $p.z"
+        println "publishing positions $transmitter $p.x $p.y $p.z"
         positionPublisher.send("$transmitter $p.x $p.y $p.z".bytes)
     }
 }

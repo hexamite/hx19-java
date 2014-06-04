@@ -1,6 +1,8 @@
 package com.hexamite.hx19
 
+import com.hexamite.cdi.config.Producer
 import com.hexamite.hx19.Parser
+import org.jglue.cdiunit.AdditionalClasses
 import org.jglue.cdiunit.CdiRunner
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -8,6 +10,7 @@ import org.junit.runner.RunWith
 import javax.inject.Inject
 
 @RunWith(CdiRunner)
+@AdditionalClasses([Producer])
 class ParserTest {
 
     @Inject Parser parser
